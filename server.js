@@ -20,8 +20,19 @@ const products = [
 ]
 app.get('/products',(request,response)=>{
     // Nhận thông tin từ người dùng
-    id = request.query.id;
+    id = request.query.id; // Lấy id từ params url
+    const product = products.filter((data)=>{
+        return data.id == id
+    })
     response.send(products);
+});
+app.get('/products/:id',(request,response)=>{
+    // Nhận thông tin từ người dùng
+    id = request.params.id; // Lấy id từ params url
+    const product = products.filter((data)=>{
+        return data.id == id
+    })
+    response.send(id);
 });
 app.listen(port,()=>{
     console.log(`listening on port ${port}`);
