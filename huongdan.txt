@@ -1,0 +1,6 @@
+Khởi tạo project: npm init 
+Cài đặt nodemon: npm i nodemon
+Cài đặt express: npm i express
+
+Cài đặt postman.
+Extension chrome: JSON Viewer
