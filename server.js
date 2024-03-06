@@ -1,39 +1,25 @@
-const express = require('express');
+// const express = require('express');
+import express from 'express';
 const app = express();
 const port = 3000;
-const products = [
-    {
-        id:1,
-        name: "Sản phẩm 1",
-        price: 1000
-    },
-    {
-        id:2,
-        name: "Sản phẩm 2",
-        price: 15000
-    },
-    {
-        id:3,
-        name: "Sản phẩm 3",
-        price: 2000
-    }
-]
-app.get('/products',(request,response)=>{
-    // Nhận thông tin từ người dùng
-    id = request.query.id; // Lấy id từ params url
-    const product = products.filter((data)=>{
-        return data.id == id
-    })
-    response.send(products);
+// app.get('/posts', (req, res) => {
+//     // Query
+//     const keywords = req.query.keywords;
+//     const cate_id = req.query.category;
+//     console.log(keywords);
+//     res.send({keywords,cate_id});
+// });
+app.get('/:slug1/:slug2', (req, res) => {
+    const slug1 = req.params.slug1;
+    const slug2 = req.params.slug2;
+    res.send({slug1,slug2});
 });
-app.get('/products/:id',(request,response)=>{
-    // Nhận thông tin từ người dùng
-    id = request.params.id; // Lấy id từ params url
-    const product = products.filter((data)=>{
-        return data.id == id
-    })
-    response.send(id);
+app.use(express.json())
+app.post('/posts', (req, res) => {
+    const body = req.body;
+    console.log(body);
+    res.send({body});
 });
 app.listen(port,()=>{
-    console.log(`listening on port ${port}`);
+    console.log(`Endpoint http://localhost:${port}/posts`);
 })
