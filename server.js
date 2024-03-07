@@ -1,42 +1,33 @@
 import express from 'express';
 const app = express();
 const port = 8080;
-const products = [
-    {
-        id:1,
-        name: "Sản pahamr 1",
-        price: 10000
-    },
-    {
-        id:2,
-        name: "Sản pahamr 2",
-        price: 15000
-    },
-    {
-        id:3,
-        name: "Sản pahamr 3",
-        price: 40000
-    },
-    {
-        id:4,
-        name: "Sản pahamr 4",
-        price: 100000
-    }
-];
-app.get('/', (req, res) => {
-    res.send('Day la trang chu');
+app.get('/search', (req, res) => {
+    //
+    const keywords = req.query.keyword;
+    const cat_id = req.query.cat_id;
+    const result = `Ban tim tu khoa ${keywords}`
+    res.send(result);
 });
-app.get('/products', (req, res) => {
-    res.send(products);
-})
-app.get('/products/:id', (req, res) => {
-    // res.send(req.params.id);
-    const id = req.params.id;
-    const product = products.filter(data=>{
-        return data.id ==id;
-    })
-    res.send(product);
-})
+app.get('/:danhmuccha/:danhmuccon', (req, res) => {
+    //
+    const parent = req.params.danhmuccha;
+    const children = req.params.danhmuccon;
+    const result = `Danh mục cha la ${parent} và danh muc con la ${children}`;
+    res.send(result);
+});
+app.use(express.json());
+app.post('/products', (req, res) => {
+    //
+    const body = req.body;
+    console.log(body);
+    res.send(body);
+});
+app.put('/products', (req, res) => {
+    //
+    const header = req.headers;
+    console.log(header);
+    res.send(header);
+});
 app.listen(port,()=>{
     console.log(`Endpoint: http://localhost:${port}`);
 })
