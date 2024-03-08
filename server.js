@@ -26,6 +26,25 @@ const ProductById = (id)=>{
     });
     return product;
 }
+const UpdateProduct = (id,data)=>{
+    const products = ProductsList();
+    let keyvalue = -1;
+    for (let i=0; i<products.length; i++){
+        if (products[i].id ==id){
+            keyvalue = i;
+            break;
+        }
+    }
+    if (keyvalue>-1){
+        products[keyvalue].title = data.title;
+        products[keyvalue].price = data.price;
+        localStorage.setItem('products', JSON.stringify(products));
+        return {status:true,data:products[keyvalue],mess:"Update successful"}
+    }
+    else {
+    return {status:false,mess:"Product not found"}
+    }
+}
 // app.get('/posts', (req, res) => {
 //     // Query
 //     const keywords = req.query.keywords;
@@ -58,6 +77,13 @@ app.post('/products', (req, res) => {
     const body = req.body;
    const mess = addProduct(body)   
     res.send(mess);
+});
+app.put('/products/:id', (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    const status = UpdateProduct(id,data);
+    res.send(status);
+    // res.send(ProductsList());
 });
 app.listen(port,()=>{
     console.log(`Endpoint http://localhost:${port}/products`);
