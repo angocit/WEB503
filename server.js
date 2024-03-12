@@ -105,10 +105,24 @@ app.get('/products/:id', (req, res) => {
     const id = req.params.id;
     res.send(getProductById(id));
 });
-app.post('/products', (req, res) => {
-    const data = req.body;
-    const info = addProduct(data);
-    res.send({status:true,data:info,message:"Add product successfully"});
+// app.post('/products', (req, res) => {
+//     const data = req.body;
+//     const info = addProduct(data);
+//     res.send({status:true,data:info,message:"Add product successfully"});
+// });
+app.post('/products',(req,res,next)=>{
+    const token = req.headers.authorization;
+    // console.log(token);
+    if (token=='Bearer 123456'){
+        next();
+    }
+    else {
+        res.json({status:false,message:"Invalid token"});
+    }
+}, (req, res) => {
+        const data = req.body;
+        const info = addProduct(data);
+        res.send({status:true,data:info,message:"Add product successfully"});
 });
 app.put('/products/:id', (req, res) => {
     const id = req.params.id;
