@@ -7,5 +7,5 @@ app.use(express.json())
 app.use('/api',router);
 app.listen(port,async ()=>{
     await connectdb();
-    console.log(`Endpoint http://localhost:${port}/products`);
+    console.log(`Endpoint http://localhost:${port}/api/products`);
 })
