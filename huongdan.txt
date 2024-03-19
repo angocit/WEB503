@@ -3,3 +3,6 @@ Cài đặt express: npm i express
 Cài đặt nodemon: npm i nodemon
 Cài đặt postman.
 Extension chrome: JSON Viewer
+
+Cài đặt Mongoose: npm i mongoose
+Cài đặt dotenv: npm i dotenv
