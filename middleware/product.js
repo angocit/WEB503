@@ -17,6 +17,7 @@ const ProductObject = Joi.object({
 export const CheckProductValidate = (req,res,next)=>{
     const {name,image,price} = req.body;
     const {error} =  ProductObject.validate({name,image,price});
+    console.log(error.details);
     if (error) {
         res.send({status:false,message:error.message});
     }
