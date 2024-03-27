@@ -1,5 +1,5 @@
 import Joi from 'joi';
-
+import jwt from 'jsonwebtoken';
 const ProductObject = Joi.object({
     name: Joi.string().required().empty().messages({
         "any.required":"Tên không để trống",
@@ -15,13 +15,29 @@ const ProductObject = Joi.object({
     })
 })
 export const CheckProductValidate = (req,res,next)=>{
-    const {name,image,price} = req.body;
-    const {error} =  ProductObject.validate({name,image,price});
-    console.log(error.details);
-    if (error) {
-        res.send({status:false,message:error.message});
+    // const {name,image,price} = req.body;
+    // const {error} =  ProductObject.validate({name,image,price});
+    // console.log(error.details);
+    let token = req.headers.authorization;
+    if (token) {
+        try {            
+        
+        token = token.split(" ")[1]
+        console.log(token);
+        const verify = jwt.verify(token,'123456');
+        next()
+    } catch (error) {
+        res.send({status:false,message:"Bạn không có quyền truy cập"})   
+    }
     }
     else{
-        next();
+    res.send({status:false,message:"Bạn không có quyền truy cập"})
     }
+    
+    // if (error) {
+    //     res.send({status:false,message:error.message});
+    // }
+    // else{
+    //     next();
+    // }
 }

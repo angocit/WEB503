@@ -14,6 +14,7 @@ Authrouter.post('/login', async (req,res)=>{
     const body = req.body;
     // Check user có tồn tại hay không
     const user = await User.findOne({email: body.email})
+    console.log(user);
     if(user===null){
         res.send({status:false,message:"Người dùng không tồn tại"})
     }
@@ -22,6 +23,7 @@ Authrouter.post('/login', async (req,res)=>{
         // lấy thông tin mật khẩu
         const password = user.password
         const verify = await bcrypt.compare(body.password,password)
+        // console.log(body.password);
         if (verify){
             const token = jwt.sign({uid:user._id},'123456')
             res.send({status:true,message:"Đăng nhập thành công",user:user,token:token})
