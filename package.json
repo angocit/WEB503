@@ -1,0 +1,16 @@
+{
+  "name": "restfulapi",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db": "nodemon index.js"
+  },
+  "author": "Ngoc Ngo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}
