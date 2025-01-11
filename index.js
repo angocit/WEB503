@@ -1,4 +1,6 @@
 import express from 'express'
+import { addProduct, addproductMidle } from './controllers/product.js'
+import mongoose from 'mongoose'
 const app = express()
 const port = 3000
 app.get(`/products`,(request,response)=>{
@@ -19,16 +21,16 @@ app.get('/:khuvuc/:price',(req,res)=>{
     res.send(`Danh mục của bạn là: ${khuvuc} giá: ${price} `)
 })
 app.use(express.json())
-app.post(`/products`,(req,res,next)=>{
-    const {title} = req.body
-    if (title=='ngoc') next()
-    else res.status(403).send({message:"Bạn không có quyền truy cập"})
-},(req,res)=>{
-    // console.log(req.headers);    
-    // const token = req.headers.authorization
-    // const body = req.body 
-    res.send({message:"Thành công"})
-})
-app.listen(port,()=>{
+app.post(`/products`,addProduct)
+const connectDB = async()=>{
+    try {
+        await mongoose.connect(`mongodb://localhost:27017/wd19319`)
+        console.log(`Kết nối DB thành công `);        
+    } catch (error) {
+        console.log(`Kết nối không thành công`);        
+    }
+}
+app.listen(port,async ()=>{
+    await connectDB()
     console.log(`Endpoint http://localhost:${port}`);    
 })
