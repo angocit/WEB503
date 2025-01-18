@@ -1,4 +1,5 @@
 import { ProductModel } from "../models/product.js"
+import { ValidateProduct } from "../validates/product.js"
 
 export const addproductMidle = (req,res,next)=>{
     const {title} = req.body
@@ -6,12 +7,16 @@ export const addproductMidle = (req,res,next)=>{
     else res.status(403).send({message:"Bạn không có quyền truy cập"})
 }
 export const addProduct = async (req,res)=>{
-    const body = req.body 
+    const body = req.body
+    const {name,image,price,size} = body
     try {
+        const {error} = ValidateProduct.validate({name,image,price,size},{abortEarly:false})
+        if (error) throw {mess:error.details.map(item=>item.message)}
         const product = await new ProductModel(body).save()
         res.status(201).send({message:"Thêm mới Thành công",status:true,data:product})
     } catch (error) {
-        res.status(500).send({message:error.message||"Thêm mới thất bại",status:false})
+        // console.log(error);        
+        res.status(500).send({message:error.mess??"Thêm mới thất bại",status:false})
     }
 }
 export const ProductList = async (req,res)=>{

@@ -4,6 +4,11 @@ const ProductSchema = mongoose.Schema({
         required:true,
         type:String
     },
+    sku:{
+        type:String,
+        unique:true,  // Giá trị là duy nhất,
+        required:true
+    },
     image:{
         required:true,
         type:String
@@ -16,12 +21,6 @@ const ProductSchema = mongoose.Schema({
         type: String,
         enum:['S','M','L'], // Giá trị phải thuộc phần tử trong mảng
         default:'S'  // Giá trị mặc định
-    },
-    sku:{
-        type:String,
-        index:true,
-        unique:true,  // Giá trị là duy nhất,
-        required:true
     }
 },{
     timestamps:true
