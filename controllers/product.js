@@ -14,3 +14,42 @@ export const addProduct = async (req,res)=>{
         res.status(500).send({message:error.message||"Thêm mới thất bại",status:false})
     }
 }
+export const ProductList = async (req,res)=>{
+    try {
+        const products = await ProductModel.find()
+        res.status(200).send({message:"Tải sản phẩm thành công",status:true,data:products})
+    } catch (error) {
+        res.status(500).send({message:"Lỗi tải sản phẩm",status:false})
+    }
+}
+export const editProduct = async (req,res)=>{
+    try {
+        const id = req.params.id 
+        const body = req.body 
+        // Kiểm tra id có tồn tại trong db hay không
+        const product = await ProductModel.findOne({_id:id})
+        if (product){
+            const newproduct = await ProductModel.findOneAndUpdate({_id:id},body,{new:true})
+            res.status(200).send({message:"Cập nhật thành công",status:true,data:newproduct})
+        }
+        else throw {mes:"Không tìm thấy sản phẩm",code:404}
+    } catch (error) {
+        res.status(error.code??500).send({message:error.mes??"Cập nhật không thành công",status:false}) 
+    }
+}
+export const DeleteProduct = async (req,res)=>{
+    try {
+        // Lấy id
+        const id = req.params.id
+        // Tìm sản phẩm theo id
+        const product = await ProductModel.findOne({_id:id})
+        if (product){
+            await ProductModel.findOneAndDelete({_id:id})
+            res.status(200).send({message:"Xóa sản phẩm thành công",status:true})
+        }
+        else throw {mes:"Không tìm thấy sản phẩm",code:404}
+    } catch (error) {
+        // console.log(error);        
+        res.status(error.code??500).send({message:error.mes??"Xóa không thành công",status:false})
+    }
+}

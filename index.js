@@ -1,27 +1,13 @@
 import express from 'express'
-import { addProduct, addproductMidle } from './controllers/product.js'
+import { addProduct, ProductList,editProduct,DeleteProduct } from './controllers/product.js'
 import mongoose from 'mongoose'
 const app = express()
 const port = 3000
-app.get(`/products`,(request,response)=>{
-    // request: nhận dữ liệu từ người dùng
-    //response: gửi dữ liệu cho người dùng
-    response.send("Hello world, WD19319")
-})
-app.get('/search',(req,res)=>{
-    // const keyword = req.query.keyword
-    // const price = req.query.price
-    const {keyword,price} = req.query
-    res.send(`Từ khóa của bạn là: ${keyword} giá: ${price} `)
-})
-app.get('/:khuvuc/:price',(req,res)=>{
-    // const khuvuc = req.params.khuvuc
-    // const price = req.params.price
-    const {khuvuc,price} = req.params
-    res.send(`Danh mục của bạn là: ${khuvuc} giá: ${price} `)
-})
 app.use(express.json())
+app.get(`/products`,ProductList)
 app.post(`/products`,addProduct)
+app.put(`/products/:id`,editProduct)
+app.delete(`/products/:id`,DeleteProduct)
 const connectDB = async()=>{
     try {
         await mongoose.connect(`mongodb://localhost:27017/wd19319`)
