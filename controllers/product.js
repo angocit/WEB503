@@ -1,0 +1,57 @@
+import { ProductModel } from "../models/product.js"
+import { ValidateProduct } from "../validate/product.js"
+
+export const AddProduct = async (req,res)=>{
+    // lấy dữ liệu người dùng gửi trong body
+    const body = req.body
+    try {
+        const {error} = ValidateProduct.validate(body)
+        if (error) throw error.details     
+        const product = await new ProductModel(body).save()
+        res.status(201).send({message:'Thêm thành công',data:product,status:true})
+    } catch (error) {       
+        res.status(500).send({message:error[0].message??'Thêm không thành công',status:false}) 
+    }
+}
+export const ProductList = async (req,res)=>{
+    try {
+       // truy vấn lấy danh sách sản phẩm
+       const products = await ProductModel.find()
+       //Phản hồi kết quả cho người dùng
+       res.status(200).send({message:'Tải thành công',data:products,status:true})
+    } catch (error) {
+        res.status(500).send({message:'Tải sản phẩm không thành công',status:false}) 
+    }
+}
+export const EditProduct = async (req,res)=>{
+    try {
+        // lấy id
+        const id = req.params.id 
+        const body = req.body
+        const check = await ProductModel.findOne({_id:id})
+        if (check)
+        {
+            const product = await ProductModel.findOneAndUpdate({_id:id},body,{new:true})
+            res.status(200).send({message:'Cập nhật thành công',data:product,status:true})
+        }
+        else throw {mes:"Không tìm thấy sản phẩm"}        
+    } catch (error) {
+        res.status(500).send({message:error.mes??'Cập nhật không thành công',status:false})
+    }
+}
+export const DeleteProduct = async(req,res)=>{
+    try {
+        // lấy id
+        const id = req.params.id
+        // Tìm sản phẩm
+        const product = await ProductModel.findOne({_id:id})
+        if (product){
+            await ProductModel.findOneAndDelete({_id:id})
+            res.status(200).send({message:'Xóa thành công',data:product,status:true})
+        }
+        else throw {mess:"Không tìm thấy sản phẩm"}
+    } catch (error) {
+        console.log(error);        
+        res.status(500).send({message:error.mess??'Xóa không thành công',status:false})
+    }
+}
