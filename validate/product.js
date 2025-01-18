@@ -12,5 +12,8 @@ export const ValidateProduct = Joi.object({
         "any.required":"Giá không để trống",
         "number.base":"Giá phải là số",
         "number.min":"Giá phải lớn hơn 1000"
+    }),
+    size:Joi.string().valid('S','M','L').messages({
+        "any.only":"Dữ liệu size không hợp lệ"
     })
 })

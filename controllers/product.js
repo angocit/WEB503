@@ -3,14 +3,14 @@ import { ValidateProduct } from "../validate/product.js"
 
 export const AddProduct = async (req,res)=>{
     // lấy dữ liệu người dùng gửi trong body
-    const {name,image,price} = req.body
+    const {name,image,price,size} = req.body
     try {
-        const {error} = ValidateProduct.validate({name,image,price})
-        if (error) throw error.details     
+        const {error} = ValidateProduct.validate({name,image,price,size},{abortEarly:false})
+        if (error) throw {mess:error.details.map(item=>item.message)}
         const product = await new ProductModel(req.body).save()
         res.status(201).send({message:'Thêm thành công',data:product,status:true})
-    } catch (error) {       
-        res.status(500).send({message:error[0].message??'Thêm không thành công',status:false}) 
+    } catch (error) {              
+        res.status(500).send({message:error.mess??'Thêm không thành công',status:false}) 
     }
 }
 export const ProductList = async (req,res)=>{
