@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import { AddProduct,ProductList,EditProduct,DeleteProduct} from './controllers/product.js'
+import { Register } from './controllers/auth.js'
 const app = express()
 const port = 3000
 app.use(express.json())
@@ -19,6 +20,8 @@ app.post('/products',AddProduct)
 app.get('/products',ProductList)
 app.put('/products/:id',EditProduct)
 app.delete('/products/:id',DeleteProduct)
+// Tạo router register
+app.post('/register',Register)
 app.listen(port,async()=>{
     // Gọi hàm kết nối database
     await connectDb()
