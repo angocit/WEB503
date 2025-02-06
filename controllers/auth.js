@@ -1,9 +1,12 @@
 import { UserModel } from "../models/users.js";
 import bcrypt from 'bcryptjs'
+import { ValidateRegister } from "../validate/auth.js";
 export const Register = async (req, res) => {
     try {
         const body = req.body
         const { email, password } = body
+        const {error} = ValidateRegister.validate(body,{abortEarly:false})
+        if (error) throw { mes: error.details.map(item=>item.message) }
         const check = await UserModel.findOne({ email: email })       
         if (check) throw { mes: "Tài khoản đã tồn tại" }
         // Mã hóa mật khẩu
