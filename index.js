@@ -1,13 +1,16 @@
 import express from 'express'
 import { addProduct, ProductList,editProduct,DeleteProduct } from './controllers/product.js'
 import mongoose from 'mongoose'
+import { Register } from './controllers/auth.js'
 const app = express()
-const port = 3000
+const port = 8000
 app.use(express.json())
 app.get(`/products`,ProductList)
 app.post(`/products`,addProduct)
 app.put(`/products/:id`,editProduct)
 app.delete(`/products/:id`,DeleteProduct)
+//Tạo router register
+app.post('/register',Register)
 const connectDB = async()=>{
     try {
         await mongoose.connect(`mongodb://localhost:27017/wd19319`)

@@ -7,7 +7,6 @@ const ProductSchema = mongoose.Schema({
     sku:{
         type:String,
         unique:true,  // Giá trị là duy nhất,
-        required:true
     },
     image:{
         required:true,
