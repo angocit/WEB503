@@ -1,6 +1,7 @@
 import { UserModel } from "../models/users.js"
 import bcrypt from 'bcryptjs'
 import { ValidateRegister } from "../validates/auth.js"
+import Jwt from 'jsonwebtoken'
 export const Register = async(req,res)=>{
     try {
         const body = req.body
@@ -19,4 +20,22 @@ export const Register = async(req,res)=>{
     } catch (error) {
         res.status(error.code??500).send({message:error.mes??"Đăng ký thất bại",status:false})
     }
+}
+export const Login = async (req,res)=>{
+ try {
+    // lấy thông tin login
+    const {email,password} = req.body 
+    // Ktra tài khoản tồn tại
+    const user = await UserModel.findOne({email:email})
+    if (!user) throw {mes:"Tài khoản không tồn tại",code:404}
+    // Ktra mật khẩu có khớp không
+    const compare = await bcrypt.compare(password,user.password)
+    if (!compare) throw {mes:"Sai mật khẩu",code:400}
+    // Tạo token
+    const token = Jwt.sign({id:user._id,name:user.name},'123456',{expiresIn:'1h'})
+    user.password = undefined
+    res.status(200).send({message:"Đăng nhập thành công",status:true,data:user,token:token})
+ } catch (error) {
+    res.status(error.code??500).send({message:error.mes??"Đăng nhập thất bại",status:false})
+ }
 }
