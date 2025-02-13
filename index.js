@@ -2,11 +2,12 @@ import express from 'express'
 import { addProduct, ProductList,editProduct,DeleteProduct } from './controllers/product.js'
 import mongoose from 'mongoose'
 import { Register,Login } from './controllers/auth.js'
+import { CheckPermission } from './middleware/auth.js'
 const app = express()
 const port = 8000
 app.use(express.json())
 app.get(`/products`,ProductList)
-app.post(`/products`,addProduct)
+app.post(`/products`,CheckPermission,addProduct)
 app.put(`/products/:id`,editProduct)
 app.delete(`/products/:id`,DeleteProduct)
 //Tạo router register
