@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import { AddProduct,ProductList,EditProduct,DeleteProduct} from './controllers/product.js'
 import { Register,Login } from './controllers/auth.js'
+import { CheckPermission } from './middleware/auth.js'
 const app = express()
 const port = 3000
 app.use(express.json())
@@ -15,7 +16,7 @@ const connectDb = async ()=>{
     }
 }
 // Tạo route thêm mới sản phẩm
-app.post('/products',AddProduct)
+app.post('/products',CheckPermission,AddProduct)
 //Tạo route lấy danh sách sản phẩm
 app.get('/products',ProductList)
 app.put('/products/:id',EditProduct)
