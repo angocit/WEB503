@@ -1,4 +1,4 @@
-import { ProductModel } from "../models/product.js"
+import { CategoryModel, ProductModel } from "../models/product.js"
 import { ValidateProduct } from "../validates/product.js"
 
 export const addproductMidle = (req,res,next)=>{
@@ -21,7 +21,7 @@ export const addProduct = async (req,res)=>{
 }
 export const ProductList = async (req,res)=>{
     try {
-        const products = await ProductModel.find()
+        const products = await ProductModel.find().populate({path:"category",select:"name"})
         res.status(200).send({message:"Tải sản phẩm thành công",status:true,data:products})
     } catch (error) {
         res.status(500).send({message:"Lỗi tải sản phẩm",status:false})
@@ -56,5 +56,14 @@ export const DeleteProduct = async (req,res)=>{
     } catch (error) {
         // console.log(error);        
         res.status(error.code??500).send({message:error.mes??"Xóa không thành công",status:false})
+    }
+}
+export const AddCategory = async(req,res)=>{
+    try {
+        const body = req.body 
+        const category = await new CategoryModel(body).save()
+        res.status(201).send({message:"Cập nhật thành công",status:true,data:category})
+    } catch (error) {
+        res.status(error.code??500).send({message:error.mes??"Thêm không thành công",status:false})
     }
 }

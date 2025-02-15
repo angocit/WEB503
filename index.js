@@ -1,5 +1,5 @@
 import express from 'express'
-import { addProduct, ProductList,editProduct,DeleteProduct } from './controllers/product.js'
+import { AddCategory,addProduct, ProductList,editProduct,DeleteProduct } from './controllers/product.js'
 import mongoose from 'mongoose'
 import { Register,Login } from './controllers/auth.js'
 import { CheckPermission } from './middleware/auth.js'
@@ -13,6 +13,7 @@ app.delete(`/products/:id`,DeleteProduct)
 //Tạo router register
 app.post('/register',Register)
 app.post('/login',Login)
+app.post('/categorys',AddCategory)
 const connectDB = async()=>{
     try {
         await mongoose.connect(`mongodb://localhost:27017/wd19319`)

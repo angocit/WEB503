@@ -20,8 +20,26 @@ const ProductSchema = mongoose.Schema({
         type: String,
         enum:['S','M','L'], // Giá trị phải thuộc phần tử trong mảng
         default:'S'  // Giá trị mặc định
-    }
+    },
+    category:[
+        {
+            type: mongoose.Schema.ObjectId,
+            ref:"categorys"
+        }
+    ]
 },{
     timestamps:true
 })
 export const ProductModel = mongoose.model('products',ProductSchema)
+const CategorySchema = mongoose.Schema({
+    name:{
+        type:String,
+        required: true
+    },
+    description:String
+},
+{
+    timestamps:true
+}
+)
+export const CategoryModel = mongoose.model("categorys",CategorySchema)
