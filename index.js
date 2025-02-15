@@ -1,6 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import { AddProduct,ProductList,EditProduct,DeleteProduct} from './controllers/product.js'
+import { AddProduct,ProductList,EditProduct,DeleteProduct,AddCategory} from './controllers/product.js'
 import { Register,Login } from './controllers/auth.js'
 import { CheckPermission } from './middleware/auth.js'
 const app = express()
@@ -21,6 +21,7 @@ app.post('/products',CheckPermission,AddProduct)
 app.get('/products',ProductList)
 app.put('/products/:id',EditProduct)
 app.delete('/products/:id',DeleteProduct)
+app.post('/categorys',AddCategory)
 // Tạo router register
 app.post('/register',Register)
 app.post('/login',Login)

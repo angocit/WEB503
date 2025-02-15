@@ -17,10 +17,25 @@ const productSchema = Schema(
             type:String,
             enum:['S','M','L'],
             default:"S"
-        }
+        },
+        category:[{
+            type:Schema.ObjectId,
+            ref:"categorys"
+        }]
     },
     {
         timestamps:true
     }
 )
 export const ProductModel = mongoose.model('products',productSchema)
+const CategorySchema = Schema({
+    name: {
+        type:String,
+        required:true
+    },
+    description:String
+},{
+    timestamps:true
+}
+)
+export const CategoryModel = mongoose.model("categorys",CategorySchema)
