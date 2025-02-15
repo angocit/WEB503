@@ -20,9 +20,25 @@ export const addProduct = async (req,res)=>{
     }
 }
 export const ProductList = async (req,res)=>{
+    const page = req.query.page??1
+    const limit = req.query.limit??4
     try {
-        const products = await ProductModel.find().populate({path:"category",select:"name"})
-        res.status(200).send({message:"Tải sản phẩm thành công",status:true,data:products})
+        //Đếm số lượng bản ghi
+        const total = await ProductModel.countDocuments()
+        // Tính số trang
+        const totalpage = Math.ceil(total/limit)
+        const products = await ProductModel.find()
+        .populate({path:"category",select:"name"})
+        .skip((page-1)*limit)
+        .limit(limit)
+        res.status(200).send({
+            message:"Tải sản phẩm thành công",
+            status:true,
+            data:products,
+            total,
+            totalpage,
+            curentpage:page
+        })
     } catch (error) {
         res.status(500).send({message:"Lỗi tải sản phẩm",status:false})
     }
