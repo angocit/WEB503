@@ -19,21 +19,24 @@ export const ProductList = async (req,res)=>{
     
     const limit = 4
     try {
-        const total = await ProductModel.countDocuments()
-        const totalpage = Math.ceil(total/limit)
+        // const total = await ProductModel.countDocuments()
+        // const totalpage = Math.ceil(total/limit)
        // truy vấn lấy danh sách sản phẩm
-       const products = await ProductModel.find()
-       .populate({path:"category",select:"name"})
-       .skip((page-1)*limit)
-       .limit(limit)
+    //    const products = await ProductModel.find()
+    //    .populate({path:"category",select:"name"})
+    //    .skip((page-1)*limit)
+    //    .limit(limit)
+    // Phân trang bằng mongoose paginate
+        const products = await ProductModel.paginate({},{page:page,limit:limit})
        //Phản hồi kết quả cho người dùng
-       res.status(200).send({
-        message:'Tải thành công',
-        data:products,
-        status:true,
-        total:total,
-        currentpage: page
-    })
+       res.status(200).send(products)
+       // Cách cũ
+    //    res.status(200).send({
+    //     message:'Tải thành công',
+    //     data:products,
+    //     status:true
+    // })
+
     } catch (error) {
         console.log(error);
         
