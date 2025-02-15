@@ -14,11 +14,26 @@ export const AddProduct = async (req,res)=>{
     }
 }
 export const ProductList = async (req,res)=>{
+    const page = req.query.page??1
+    // console.log(page);
+    
+    const limit = 4
     try {
+        const total = await ProductModel.countDocuments()
+        const totalpage = Math.ceil(total/limit)
        // truy vấn lấy danh sách sản phẩm
-       const products = await ProductModel.find().populate({path:"category",select:"name"})
+       const products = await ProductModel.find()
+       .populate({path:"category",select:"name"})
+       .skip((page-1)*limit)
+       .limit(limit)
        //Phản hồi kết quả cho người dùng
-       res.status(200).send({message:'Tải thành công',data:products,status:true})
+       res.status(200).send({
+        message:'Tải thành công',
+        data:products,
+        status:true,
+        total:total,
+        currentpage: page
+    })
     } catch (error) {
         console.log(error);
         
