@@ -22,6 +22,7 @@ export const addProduct = async (req,res)=>{
 export const ProductList = async (req,res)=>{
     const page = req.query.page??1
     const limit = req.query.limit??4
+    const price = req.query.price
     try {
         //Đếm số lượng bản ghi
         // const total = await ProductModel.countDocuments()
@@ -41,7 +42,11 @@ export const ProductList = async (req,res)=>{
         // })
 
         // Phân trang bằng plugin
-        const results = await ProductModel.paginate({},{
+        const option ={
+            price:{$gt:price}
+        }
+        if (!price) delete option.price
+        const results = await ProductModel.paginate(option,{
             page:page,
             limit:limit,
             populate:{path:"category",select:"name"}
