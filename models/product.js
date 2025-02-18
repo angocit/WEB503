@@ -4,7 +4,7 @@ const productSchema = Schema(
     {
         name:{
             type:String,
-            required:true,
+            required:true
         },
         image:{
             type:String,
@@ -29,6 +29,7 @@ const productSchema = Schema(
     }
 )
 productSchema.plugin(mongoosePaginate);
+productSchema.index({ name: 'text'});
 export const ProductModel = mongoose.model('products',productSchema)
 const CategorySchema = Schema({
     name: {

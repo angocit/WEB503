@@ -17,11 +17,17 @@ export const ProductList = async (req,res)=>{
     const page = req.query.page??1
     // console.log(page);
     const price = req.query.price;
+    const keywords = req.query.keywords;
     const limit = 4
     try {
         const option = {
-            price:{$gt:price}
+            price:{$gt:price},
+            $text: { $search: keywords }
         }
+        if (!price) delete option.price
+        if (!keywords) delete option.name
+        // console.log(option);
+        
         // const total = await ProductModel.countDocuments()
         // const totalpage = Math.ceil(total/limit)
        // truy vấn lấy danh sách sản phẩm
