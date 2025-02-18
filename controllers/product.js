@@ -16,9 +16,12 @@ export const AddProduct = async (req,res)=>{
 export const ProductList = async (req,res)=>{
     const page = req.query.page??1
     // console.log(page);
-    
+    const price = req.query.price;
     const limit = 4
     try {
+        const option = {
+            price:{$gt:price}
+        }
         // const total = await ProductModel.countDocuments()
         // const totalpage = Math.ceil(total/limit)
        // truy vấn lấy danh sách sản phẩm
@@ -27,7 +30,7 @@ export const ProductList = async (req,res)=>{
     //    .skip((page-1)*limit)
     //    .limit(limit)
     // Phân trang bằng mongoose paginate
-        const products = await ProductModel.paginate({},{page:page,limit:limit})
+        const products = await ProductModel.paginate(option,{page:page,limit:limit})
        //Phản hồi kết quả cho người dùng
        res.status(200).send(products)
        // Cách cũ
