@@ -32,6 +32,7 @@ const ProductSchema = mongoose.Schema({
     timestamps:true
 })
 ProductSchema.plugin(mongoosePaginate);
+ProductSchema.index({name:'text'})
 export const ProductModel = mongoose.model('products',ProductSchema)
 const CategorySchema = mongoose.Schema({
     name:{
