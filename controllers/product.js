@@ -25,7 +25,7 @@ export const ProductList = async (req,res)=>{
             $text: { $search: keywords }
         }
         if (!price) delete option.price
-        if (!keywords) delete option.name
+        if (!keywords) delete option.$text
         // console.log(option);
         
         // const total = await ProductModel.countDocuments()
