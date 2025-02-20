@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 import { AddProduct,ProductList,EditProduct,DeleteProduct,AddCategory} from './controllers/product.js'
 import { Register,Login } from './controllers/auth.js'
 import { CheckPermission } from './middleware/auth.js'
+import { UploadFile,ReadImageFromStorage } from './controllers/upload.js'
+import { upload } from "./models/upload.js"
 const app = express()
 const port = 3000
 app.use(express.json())
@@ -25,6 +27,9 @@ app.post('/categorys',AddCategory)
 // Tạo router register
 app.post('/register',Register)
 app.post('/login',Login)
+app.post('/file/upload',upload.any(),UploadFile)
+// Tạo route đọc link ảnh
+app.get('/file/:filename',ReadImageFromStorage)
 app.listen(port,async()=>{
     // Gọi hàm kết nối database
     await connectDb()
