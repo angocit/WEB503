@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import mongoosePaginate from 'mongoose-paginate-v2'
 const ProductSchema = mongoose.Schema({
     name:{
@@ -46,3 +46,22 @@ const CategorySchema = mongoose.Schema({
 }
 )
 export const CategoryModel = mongoose.model("categorys",CategorySchema)
+const CartSchema = Schema({
+    userId:{
+        type:Schema.ObjectId,
+        required:true,
+        ref:"users"
+    },
+    Items:[{
+        productId:{
+            type:Schema.ObjectId,
+            required:true,
+            ref:"products"
+        },
+        quantity:{
+            type:Number,
+            default:1
+        }
+    }]
+})
+export const CartModel = mongoose.model("carts",CartSchema)

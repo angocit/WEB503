@@ -1,4 +1,4 @@
-import { CategoryModel, ProductModel } from "../models/product.js"
+import { CartModel, CategoryModel, ProductModel } from "../models/product.js"
 import { ValidateProduct } from "../validates/product.js"
 
 export const addproductMidle = (req,res,next)=>{
@@ -32,7 +32,7 @@ export const ProductList = async (req,res)=>{
         // const products = await ProductModel.find()
         // .populate({path:"category",select:"name"})
         // .skip((page-1)*limit)
-        // .limit(limit)
+        // .limit(limit).sort({price:1})
         // res.status(200).send({
         //     message:"Tải sản phẩm thành công",
         //     status:true,
@@ -53,6 +53,7 @@ export const ProductList = async (req,res)=>{
         const results = await ProductModel.paginate(option,{
             page:page,
             limit:limit,
+            sort:{price:"desc",name:1},
             populate:{path:"category",select:"name"}
         })
         res.status(200).send(results)
@@ -98,5 +99,36 @@ export const AddCategory = async(req,res)=>{
         res.status(201).send({message:"Cập nhật thành công",status:true,data:category})
     } catch (error) {
         res.status(error.code??500).send({message:error.mes??"Thêm không thành công",status:false})
+    }
+}
+export const AddToCart = async (req,res)=>{
+    try {
+        const user = req.user
+        const {products_Id,quantity} = req.body
+        // Tìm giỏ hàng theo IDUser
+        const cart = await CartModel.findOne({userId:user.id})
+        if (cart){
+            let position = -1;
+            cart.Items.forEach((item,index)=>{
+                if (item.productId == products_Id){
+                    position = index
+                }
+            })
+            if (position > -1){
+                cart.Items[position].quantity +=quantity
+            }
+            else cart.Items.push({productId:products_Id,quantity:quantity})
+            await CartModel.findOneAndUpdate({_id:cart._id},cart)
+        }
+        else {
+            const newcart = {
+                userId: user.id,
+                Items:[{productId:products_Id,quantity:quantity}]
+            }
+            await new CartModel(newcart).save()
+        }
+        res.send({message:"Thêm giỏ hàng thành công"})
+    } catch (error) {
+        res.status(error.code??500).send({message:error.mes??"Thêm không thành công",status:false}) 
     }
 }
