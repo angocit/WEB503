@@ -108,16 +108,23 @@ export const AddToCart = async (req,res)=>{
         // Tìm giỏ hàng theo IDUser
         const cart = await CartModel.findOne({userId:user.id})
         if (cart){
-            let position = -1;
-            cart.Items.forEach((item,index)=>{
-                if (item.productId == products_Id){
-                    position = index
-                }
-            })
-            if (position > -1){
-                cart.Items[position].quantity +=quantity
+            // let position = -1;
+            // cart.Items.forEach((item,index)=>{
+            //     if (item.productId == products_Id){
+            //         position = index
+            //     }
+            // })
+            // if (position > -1){
+            //     cart.Items[position].quantity +=quantity
+            // }
+            // else cart.Items.push({productId:products_Id,quantity:quantity})
+            const item = cart.Items.filter(item=>item.productId==products_Id)
+            if (item.length>0){
+                cart.Items = cart.Items.map(item=>(item.productId==products_Id)?{...item,quantity:item.quantity+quantity}:item)
             }
-            else cart.Items.push({productId:products_Id,quantity:quantity})
+            else {
+                cart.Items = [...cart.Items,[{productId:products_Id,quantity:quantity}]]
+            }
             await CartModel.findOneAndUpdate({_id:cart._id},cart)
         }
         else {
