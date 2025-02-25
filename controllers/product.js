@@ -1,4 +1,4 @@
-import { CategoryModel, ProductModel } from "../models/product.js"
+import { CartModel, CategoryModel, ProductModel } from "../models/product.js"
 import { ValidateProduct } from "../validate/product.js"
 
 export const AddProduct = async (req,res)=>{
@@ -15,7 +15,7 @@ export const AddProduct = async (req,res)=>{
 }
 export const ProductList = async (req,res)=>{
     const page = req.query.page??1
-    // console.log(page);
+    // console.log(page);    
     const price = req.query.price;
     const keywords = req.query.keywords;
     const limit = 4
@@ -26,20 +26,20 @@ export const ProductList = async (req,res)=>{
         }
         if (!price) delete option.price
         if (!keywords) delete option.$text
-        // console.log(option);
+        console.log(option);
         
         // const total = await ProductModel.countDocuments()
         // const totalpage = Math.ceil(total/limit)
        // truy vấn lấy danh sách sản phẩm
-    //    const products = await ProductModel.find()
+    //    const products = await ProductModel.find().sort({"price":"asc"})
     //    .populate({path:"category",select:"name"})
     //    .skip((page-1)*limit)
     //    .limit(limit)
     // Phân trang bằng mongoose paginate
-        const products = await ProductModel.paginate(option,{page:page,limit:limit})
-       //Phản hồi kết quả cho người dùng
+        const products = await ProductModel.paginate(option,{page:page,limit:limit,sort:{price:-1,name:1}})
+    //    Phản hồi kết quả cho người dùng
        res.status(200).send(products)
-       // Cách cũ
+    //    // Cách cũ
     //    res.status(200).send({
     //     message:'Tải thành công',
     //     data:products,
@@ -91,5 +91,26 @@ export const AddCategory = async(req,res)=>{
         res.status(201).send({message:'Thêm thành công',data:category,status:true})
     } catch (error) {
         res.status(500).send({message:error.mess??'Thêm không thành công',status:false})
+    }
+}
+export const AddToCart =async (req,res)=>{
+    try {
+        console.log(req.body); 
+        const user = req.body.user 
+        const carts = await CartModel.findOne({User:user.id,Products:req.body.products_Id})
+        if (carts){
+            carts.quantity +=req.body.quantity
+            await CartModel.findOneAndUpdate({_id:carts._id},carts)
+        }
+        else {
+            const newCartItem = await new CartModel({
+                User:user.id,
+                Products: req.body.products_Id,
+                quantity:req.quantity
+            }).save()
+        }
+        res.send({message:"Thêm giỏ hàng thành công"})
+    } catch (error) {
+        
     }
 }

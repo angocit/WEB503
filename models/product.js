@@ -42,3 +42,37 @@ const CategorySchema = Schema({
 }
 )
 export const CategoryModel = mongoose.model("categorys",CategorySchema)
+const CartSchema = Schema({
+    User: {
+        type:Schema.ObjectId,
+        required:true,
+        ref:"users"
+    },
+    Products:{
+        type:Schema.ObjectId,
+        required:true,
+        ref:"products"
+    },
+    quantity:{
+        type:Number,
+        default:1
+    }
+    // Hoặc
+    // Items:[
+    //     {
+    //         productid:{
+    //         type:Schema.ObjectId,
+    //         required:true,
+    //         ref:"products"
+    //             },
+    //         quantity:{
+    //             type:Number,
+    //             default:1
+    //         }
+    //     }
+    // ],
+},{
+    timestamps:true
+}
+)
+export const CartModel = mongoose.model("carts",CartSchema)

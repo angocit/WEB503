@@ -8,6 +8,7 @@ export const CheckPermission = async (req,res,next)=>{
         if (!token) throw {mes:"Phương thức token không đúng"} 
         // Xác thực token
         const user = Jwt.verify(token,'123456')
+        req.body.user = user
         next()
     } catch (error) {
         res.status(400).send({message:error.mes??'Xác thực người dùng không thành công',status:false})       
