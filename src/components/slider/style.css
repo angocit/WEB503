@@ -1,6 +1,6 @@
 .content{
     position: absolute;
-    top: 50%;
+    top: 30%;
     left: calc(50% - 200px);
     z-index: 999;
     color: #fff;
@@ -9,12 +9,12 @@
 }
 .content label{text-transform: uppercase; }
 .content h3{font-size: 2.5rem; font-weight: bold;}
-.content label,.content h3,.content a{opacity: 0; float:left;width: 100%;}
+.content label,.content h3,.content a{opacity: 0; display: block;}
 .slick-active .content label{animation: totop 2s ease forwards;}
 .slick-active .content h3{animation: totop 2.5s ease forwards;}
 .slick-active .content a{animation: totop 3s ease forwards;} 
 .slick-active img{
-    animation: zoom 5s forwards;
+    animation: zoom 8s forwards;
 }
 @keyframes zoom{
     0%{
