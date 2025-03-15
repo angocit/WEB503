@@ -1,4 +1,4 @@
-.content{
+.slider-container .content{
     position: absolute;
     top: 30%;
     left: calc(50% - 200px);
@@ -7,9 +7,9 @@
     width: 400px;
     text-align: center;
 }
-.content label{text-transform: uppercase; }
-.content h3{font-size: 2.5rem; font-weight: bold;}
-.content label,.content h3,.content a{opacity: 0; display: block;}
+.slider-container .content label{text-transform: uppercase; }
+.slider-container .content h3{font-size: 2.5rem; font-weight: bold;}
+.slider-container .content label,.slider-container .content h3,.slider-container .content a{opacity: 0; display: block;}
 .slick-active .content label{animation: totop 2s ease forwards;}
 .slick-active .content h3{animation: totop 2.5s ease forwards;}
 .slick-active .content a{animation: totop 3s ease forwards;} 

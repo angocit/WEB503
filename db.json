@@ -1,5 +1,27 @@
 {
-  "books": [],
+  "sliders": [
+    {
+      "label": "Label 1",
+      "image": "https://feelingteaonline.com/wp-content/uploads/2023/07/zalo-3.jpg",
+      "caption": "Trà sữa TLINK, uống là thích",
+      "url": "#",
+      "id": 1
+    },
+    {
+      "label": "Tiêu đề 2",
+      "image": "https://cdn-www.vinid.net/2020/05/be195fb4-20200501_appvinid_bannerweb_toocha.jpg",
+      "caption": "Trà sữa TLINK, uống là thích 2",
+      "url": "#",
+      "id": 2
+    },
+    {
+      "label": "Tiêu đề 3",
+      "image": "https://yihetang.com.vn/public/upload/1.jpg",
+      "caption": "Trà sữa TLINK, uống là thích",
+      "url": "#",
+      "id": 3
+    }
+  ],
   "products": [
     {
       "id": 1,
