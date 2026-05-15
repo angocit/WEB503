@@ -1,4 +1,6 @@
 import express from 'express'
+import { connectDB } from './src/config/database.js';
+import { productModel } from './src/models/product.js';
 const app = express();
 const port = 3000
 app.use(express.json()) // Phải có cái này mới lấy được dữ liệu từ body
@@ -16,15 +18,15 @@ app.get('/search',(request,response)=>{
     const {keyword} = request.query
     response.send(`Từ khóa bạn vừa tìm kiếm là: ${keyword}`)
 })
-app.post('/products',(request,response)=>{
+app.post('/products',async (request,response)=>{
     // lấy dữ liệu từ body người dùng gửi lên
-    const productdata = request.body
-    //Lấy dữ liệu qua headers
-    const {authorization} = request.headers
-    // response.send({product:productdata,token:authorization})
-    // trả về json
-    // response.json({productdata})
-    response.status(201).send({product:productdata,token:authorization})
+    try {
+        const productdata = request.body
+        const product = await new productModel(productdata).save()
+        response.status(201).send({message:'Thêm mới thành công',data:product})
+    } catch (error) {
+         response.status(503).send({message:'Thêm mới thất bại'})
+    }
 })
 app.put('/products',(request,response)=>{
     response.send("Đây là phương thức put")
@@ -32,6 +34,7 @@ app.put('/products',(request,response)=>{
 app.delete('/products',(request,response)=>{
     response.send("Đây là phương thức delete")
 })
-app.listen(port,()=>{
+app.listen(port,async()=>{
+    await connectDB()
     console.log(`Endpoint http://localhost:${port}`);
 })

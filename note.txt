@@ -1,7 +1,7 @@
 Tham số request và response 
 
 - Request: Nhận dữ liệu từ người dùng gửi lên .
-  - query: localhost:3000/search?keyword = điện thoại 
+  - query: localhost:3000/search?keyword = điện thoại&category=1
     sử dụng request.query.keyword // điện thoại 
   - gửi qua param
      localhost:3000/product/1
