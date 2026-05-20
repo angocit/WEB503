@@ -30,11 +30,6 @@ app.get('/products/:id',async (request,response)=>{
     }
     
 })
-app.get('/search',(request,response)=>{
-    // const keyword = request.query.keyword
-    const {keyword} = request.query
-    response.send(`Từ khóa bạn vừa tìm kiếm là: ${keyword}`)
-})
 app.post('/products',async (request,response)=>{
     // lấy dữ liệu từ body người dùng gửi lên
     try {
@@ -45,8 +40,29 @@ app.post('/products',async (request,response)=>{
          response.status(503).send({message:'Thêm mới thất bại'})
     }
 })
-app.put('/products',(request,response)=>{
-    response.send("Đây là phương thức put")
+// sửa 
+app.put('/products/:id',async (request,response)=>{
+    // Lấy id 
+    const {id} = request.params
+    try {
+        // Truy vấn để kiểm tra id có tồn tại hay không
+        const product = await productModel.findById(id)
+        // Kiểm tra product
+        if (product){
+            // Thực hiện cập nhật
+            //Lấy dữ liệu người dùng gửi lên
+            const data = request.body
+            const newproduct = await productModel.findOneAndUpdate({_id:id},data,{new:true})
+            // Phản hồi lại cho người dùng
+            response.status(200).send({message:"Cập nhật thành công",data:newproduct})
+        }
+        else {
+            response.status(404).send({message:"ID này không tồn tại"})
+        }
+    } catch (error) {
+         response.status(503).send({message:"Cập nhật không thành công"})
+    }
+    
 })
 app.delete('/products',(request,response)=>{
     response.send("Đây là phương thức delete")
