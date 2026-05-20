@@ -4,14 +4,31 @@ import { productModel } from './src/models/product.js';
 const app = express();
 const port = 3000
 app.use(express.json()) // Phải có cái này mới lấy được dữ liệu từ body
-app.get('/products',(request,response)=>{
-    response.send("Xin chào WD21102 Ahihih")
+app.get('/products',async (request,response)=>{
+    const products = await productModel.find()
+    response.status(200).send(
+        {
+            message:"Lấy danh sách thành công",
+            data: products
+        }
+    )
 })
-app.get('/products/:id',(request,response)=>{
+// Lấy chi tiết
+app.get('/products/:id',async (request,response)=>{
     // Lấy id
     // const id = request.params.id
-    const {id} = request.params
-    response.send(`Banj vừa yêu cầu lấy thông tin sản phẩm có id là ${id}`)
+    try {
+        const {id} = request.params
+        // 2 Cách tìm.
+        // Cách 1: Tìm theo field
+        // const product = await productModel.findOne({_id:id})
+        // Cách 2: Tìm theo id
+        const product = await productModel.findById(id)
+        response.status(200).send({message:"Lấy danh sách thành công",data:product})
+    } catch (error) {
+        response.status(503).send({message:"Lấy danh sách thất bại"})
+    }
+    
 })
 app.get('/search',(request,response)=>{
     // const keyword = request.query.keyword
