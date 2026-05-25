@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { ProductAdd, ProductByID, ProductDelete, ProductEdit, ProductList } from "../controllers/product.js";
 import { VerifyUser } from "../utils/verify.js";
+import { ProductValidation } from "../utils/validators.js";
 
 const router = Router()
 router.get('/products',ProductList)
 // Lấy chi tiết
 router.get('/products/:id', ProductByID)
-router.post('/products',VerifyUser,ProductAdd)
+router.post('/products',VerifyUser,ProductValidation,ProductAdd)
 // sửa 
 router.put('/products/:id', ProductEdit)
 // Xóa

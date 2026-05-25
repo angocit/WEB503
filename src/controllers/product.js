@@ -1,3 +1,4 @@
+import { validationResult } from 'express-validator';
 import { productModel } from '../models/product.js';
 export const ProductList =  async (request, response) => {
     const products = await productModel.find()
@@ -26,6 +27,12 @@ export const ProductByID = async (request, response) => {
 export const ProductAdd = async (request, response) => {
     // lấy dữ liệu từ body người dùng gửi lên
     try {
+        const error = validationResult(request)
+        if (error.errors.length>0){
+            console.log(error);
+            const message = error.errors.map(item=>item.msg)
+            return response.send({message})
+        }
         const productdata = request.body
         const product = await new productModel(productdata).save()
         response.status(201).send({ message: 'Thêm mới thành công', data: product })
