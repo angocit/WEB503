@@ -7,11 +7,16 @@ const userSchema = new Schema({
     email:{
         type: String,
         unique: true, 
+        require:true,
     },
-    password:String,
+    password:{
+        type:String,
+        require:true
+    },
     role: {
         type: String,
-        enum: ["admin","user","manage"]
+        enum: ["admin","user","manage"],
+        default:"user"
     }
 }
 ,{
