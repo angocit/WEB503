@@ -28,8 +28,8 @@ export const ProductAdd = async (request, response) => {
     // lấy dữ liệu từ body người dùng gửi lên
     try {
         const error = validationResult(request)
-        if (error.errors.length>0){
-            console.log(error);
+        if (!error.isEmpty()){
+            // console.log(error);
             const message = error.errors.map(item=>item.msg)
             return response.send({message})
         }
