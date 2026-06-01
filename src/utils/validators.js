@@ -8,3 +8,7 @@ export const RegisterValidation = [
     body('email').trim().notEmpty().isEmail().withMessage("Email không hợp lệ"),
     body('password').trim().isLength({min:6}).withMessage("Mật khẩu tối thiểu 6 kí tự")
 ]
+export const LoginValidation = [
+    body('email').trim().notEmpty().isEmail().withMessage("Email không hợp lệ"),
+    body('password').trim().isLength({min:6}).withMessage("Mật khẩu tối thiểu 6 kí tự")
+]
