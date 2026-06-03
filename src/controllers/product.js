@@ -10,7 +10,8 @@ export const ProductList =  async (request, response) => {
     if (keyword){
         option.$text = {$search:keyword}
     }
-    const products = await productModel.find(option).populate("category")
+    // const products = await productModel.find(option).populate("category")
+    const products = await productModel.find(option).populate({path:"category",select: "name createdAt"})
     response.status(200).send(
         {
             message: "Lấy danh sách thành công",

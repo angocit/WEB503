@@ -6,10 +6,10 @@ const productSchema = new Schema({
         minLength:6 // Độ dài tối thiểu
     },
     image:String,
-    category:{
+    category:[{
         type:Schema.ObjectId,
         ref:"categories"
-    },
+    }],
     price:{
         type:Number,
         require:true, // Bắt buộc phải nhập,
