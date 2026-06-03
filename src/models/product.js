@@ -1,3 +1,4 @@
+import { text } from "express";
 import { Schema,model } from "mongoose";
 const productSchema = new Schema({
     name:{
@@ -5,6 +6,10 @@ const productSchema = new Schema({
         minLength:6 // Độ dài tối thiểu
     },
     image:String,
+    category:{
+        type:Schema.ObjectId,
+        ref:"categories"
+    },
     price:{
         type:Number,
         require:true, // Bắt buộc phải nhập,
@@ -15,4 +20,5 @@ const productSchema = new Schema({
 ,{
     timestamps:true
 })
+productSchema.index({name:"text"})
 export const productModel = model("products",productSchema)

@@ -1,7 +1,16 @@
 import { validationResult } from 'express-validator';
 import { productModel } from '../models/product.js';
 export const ProductList =  async (request, response) => {
-    const products = await productModel.find()
+    const {gprice,keyword} = request.query
+    // console.log(gprice);    
+    const option = {}
+    if (gprice){
+        option.price = {$gte:gprice}
+    }  
+    if (keyword){
+        option.$text = {$search:keyword}
+    }
+    const products = await productModel.find(option).populate("category")
     response.status(200).send(
         {
             message: "Lấy danh sách thành công",
