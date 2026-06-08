@@ -11,23 +11,35 @@ export const ProductList =  async (request, response) => {
         option.$text = {$search:keyword}
     }
     // let skip = 0
-    let limitvalue = 20
-    let pagevalue = 1
-    if (limit){
-        limitvalue = limit
-    }
-    if (page){
-        pagevalue = page
-    }
+    let limitvalue = limit||20
+    let pagevalue = page||1
+    // if (limit){
+    //     limitvalue = limit
+    // }
+    // if (page){
+    //     pagevalue = page
+    // }
     // const products = await productModel.find(option).populate("category")
     // const products = await productModel.find(option).populate({path:"category",select: "name createdAt"})
     // .skip(skip) // Bỏ qua bao nhiêu bản ghi
     // .limit(limitvalue) // Giới hạn số lượng bản ghi
     // .sort({price:1,name:1})  // Sắp xếp theo giá và tên (cái nào viết trước thì ưu tiên trước)
-      const products = await productModel.paginate(option,
+     const myCustomLabels = {
+        totalDocs: 'total',
+        docs: 'products',
+        limit: 'limit',
+        page: 'currentPage',
+        nextPage: 'next',
+        prevPage: 'prev',
+        totalPages: 'pagetotal',
+        pagingCounter: 'slNo',
+        meta: 'paginator',
+        };
+    const products = await productModel.paginate(option,
         {
             limit:limitvalue,
-            page:pagevalue
+            page:pagevalue,
+            customLabels:myCustomLabels
         })
     response.status(200).send(
         {
