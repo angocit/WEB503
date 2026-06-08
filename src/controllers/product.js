@@ -11,7 +11,7 @@ export const ProductList =  async (request, response) => {
         option.$text = {$search:keyword}
     }
     // const products = await productModel.find(option).populate("category")
-    const products = await productModel.find(option).populate({path:"category",select: "name createdAt"})
+    const products = await productModel.find(option).populate({path:"category",select: "name createdAt"}).skip(2).limit(2)
     response.status(200).send(
         {
             message: "Lấy danh sách thành công",
