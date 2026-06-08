@@ -10,7 +10,7 @@ export const ProductList =  async (request, response) => {
     if (keyword){
         option.$text = {$search:keyword}
     }
-    let skip = 0
+    // let skip = 0
     let limitvalue = 20
     let pagevalue = 1
     if (limit){
@@ -18,13 +18,17 @@ export const ProductList =  async (request, response) => {
     }
     if (page){
         pagevalue = page
-        skip = (pagevalue-1)*limitvalue
     }
     // const products = await productModel.find(option).populate("category")
-    const products = await productModel.find(option).populate({path:"category",select: "name createdAt"})
-    .skip(skip) // Bỏ qua bao nhiêu bản ghi
-    .limit(limitvalue) // Giới hạn số lượng bản ghi
-    .sort({price:1,name:1})  // Sắp xếp theo giá và tên (cái nào viết trước thì ưu tiên trước)
+    // const products = await productModel.find(option).populate({path:"category",select: "name createdAt"})
+    // .skip(skip) // Bỏ qua bao nhiêu bản ghi
+    // .limit(limitvalue) // Giới hạn số lượng bản ghi
+    // .sort({price:1,name:1})  // Sắp xếp theo giá và tên (cái nào viết trước thì ưu tiên trước)
+      const products = await productModel.paginate(option,
+        {
+            limit:limitvalue,
+            page:pagevalue
+        })
     response.status(200).send(
         {
             message: "Lấy danh sách thành công",

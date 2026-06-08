@@ -1,5 +1,6 @@
 import { text } from "express";
 import { Schema,model } from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2'
 const productSchema = new Schema({
     name:{
         type:String,
@@ -21,4 +22,5 @@ const productSchema = new Schema({
     timestamps:true
 })
 productSchema.index({name:"text"})
+productSchema.plugin(mongoosePaginate)
 export const productModel = model("products",productSchema)
