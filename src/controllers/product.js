@@ -1,7 +1,7 @@
 import { validationResult } from 'express-validator';
 import { productModel } from '../models/product.js';
 export const ProductList =  async (request, response) => {
-    const {gprice,keyword} = request.query
+    const {gprice,keyword,page,limit} = request.query
     // console.log(gprice);    
     const option = {}
     if (gprice){
@@ -10,8 +10,18 @@ export const ProductList =  async (request, response) => {
     if (keyword){
         option.$text = {$search:keyword}
     }
+    let skip = 0
+    let limitvalue = 20
+    let pagevalue = 1
+    if (limit){
+        limitvalue = limit
+    }
+    if (page){
+        pagevalue = page
+        skip = (pagevalue-1)*limitvalue
+    }
     // const products = await productModel.find(option).populate("category")
-    const products = await productModel.find(option).populate({path:"category",select: "name createdAt"}).skip(2).limit(2)
+    const products = await productModel.find(option).populate({path:"category",select: "name createdAt"}).skip(skip).limit(limitvalue)
     response.status(200).send(
         {
             message: "Lấy danh sách thành công",
