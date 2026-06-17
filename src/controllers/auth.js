@@ -47,7 +47,7 @@ export const Login = async(req,res)=>{
         return res.status(400).send({message:"Mật khẩu không hợp lệ"})
     }
     // Tạo token
-    const token = jwt.sign({id:user._id,email:user.email,name:user.name,role:user.role},'123456',{expiresIn:600})
+    const token = jwt.sign({id:user._id,email:user.email,name:user.name,role:user.role},dotenv.config().parsed.PRIVATE_KEY,{expiresIn:600})
     // Loại bỏ password
     user.password=undefined
     res.status(200).send({message: "Đăng nhập thành công",user,token})

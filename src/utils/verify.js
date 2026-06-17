@@ -8,7 +8,7 @@ export const VerifyUser =  (req,res,next)=>{
             // Tách chuỗi Bearer để lấy token
             const [,token] = authorization.split(" ")
             // console.log(token);  
-            const verify = jwt.verify(token,"123456")  
+            const verify = jwt.verify(token,dotenv.config().parsed.PRIVATE_KEY)  
             next() 
         } catch (error) {
             return res.status(403).send({message:"Token không hợp lệ"})
