@@ -7,7 +7,7 @@ const router = Router()
 router.get('/products',ProductList)
 // Lấy chi tiết
 router.get('/products/:id', ProductByID)
-router.post('/products',VerifyUser,ProductValidation,ProductAdd)
+router.post('/products',ProductValidation,ProductAdd)
 // sửa 
 router.put('/products/:id', ProductEdit)
 // Xóa

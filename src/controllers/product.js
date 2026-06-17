@@ -76,6 +76,8 @@ export const ProductAdd = async (request, response) => {
         const product = await new productModel(productdata).save()
         response.status(201).send({ message: 'Thêm mới thành công', data: product })
     } catch (error) {
+        console.log(error);
+        
         response.status(503).send({ message: 'Thêm mới thất bại' })
     }
 }
