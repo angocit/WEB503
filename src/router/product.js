@@ -1,5 +1,7 @@
 import express from 'express'
-import { ProductModel } from '../models/product.js'
+import { ProductModel, UserModel } from '../models/product.js'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 const router = express.Router()
 // Lấy danh sách
 router.get('/products',async (req,res)=>{
@@ -59,6 +61,45 @@ router.post('/products',async (req,res)=>{
         res.send({message:"Thêm mới thành công",data:newproduct})
     } catch (error) {
         res.send({message:"Thêm mới thất bại"})
+    }
+})
+router.post('/register',async (req,res)=>{
+    try {
+        const user = req.body
+        // KIểm tra email tồn tại hay chưa?
+        const check = await UserModel.findOne({email:user.email})
+        // Nếu check tồn tại => Thông báo email đã tồn tại
+        if (check) return res.send({message:"Email đã tồn tại"})
+        // Mã hóa mật khẩu
+        user.password = await bcrypt.hash(user.password,10)
+        const newuser = await new UserModel(user).save()
+        // Loại bỏ thông tin password trước khi trả dữ liệu user về cho người dùng
+        newuser.password = undefined
+        res.send({message:"Đăng ký thành công",data:newuser})
+    } catch (error) {        
+        res.send({message:"Đăng ký thất bại"})
+    }
+})
+// Chức năng đăng nhập
+// Link API: localhost:3000/login
+// import jwt from 'jsonwebtoken'
+router.post('/login',async (req,res)=>{
+    try {
+        const user = req.body
+        // KIểm tra email tồn tại hay chưa?
+        const check = await UserModel.findOne({email:user.email})
+        // Nếu không tồn tại thì thông báo là tài khoản không tồn tại
+        if (!check) return res.send({message:"Tài khoản không tồn tại"})
+        // So sánh mật khẩu có khớp hay không
+        const password = check.password // mật khẩu đã mã hóa lưu trong db
+        const compare = await bcrypt.compare(user.password,password)
+        if (!compare) return res.send({message:"Sai mật khẩu"})
+        // Tạo token
+        const token = jwt.sign({name:check.name,email:check.email},'123456')
+        // Gửi thông tin cho người dùng
+        res.send({message:"Đăng nhập thành công",token:token,data:{name:check.name,email:check.email}})
+    } catch (error) {
+          res.send({message:"Đăng nhập thất bại"})     
     }
 })
 export default router
