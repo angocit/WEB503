@@ -2,6 +2,12 @@ import express from 'express'
 import { ProductModel, UserModel } from '../models/product.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { body, validationResult } from 'express-validator'
+const ProductValidator = [
+    body('name').trim().isLength({min:6}).withMessage("Tên không để trống và > 5 kí tự"),
+    body('price').isFloat({min:1}).withMessage("Giá phải là số và > 0")
+]
+
 const router = express.Router()
 // Lấy danh sách
 router.get('/products',async (req,res)=>{
@@ -24,9 +30,16 @@ router.get('/products/:id',async (req,res)=>{
     }
 })
 // cập nhật
-router.put('/products/:id',async(req,res)=>{
+router.put('/products/:id',ProductValidator,async(req,res)=>{
     const {id} = req.params
     try {
+         const error = validationResult(req)
+        // Check error có trống hay không
+        if (!error.isEmpty()){
+            // Lấy thông tin thông báo
+            const message = error.errors.map(item=>item.msg)
+            return res.send({message})
+        }
         // Tìm sản phẩm xem có không
         const check = await ProductModel.findById(id)
         if (!check) return res.send({message:"Không tìm thấy sản phẩm"})
@@ -54,8 +67,15 @@ router.delete('/products/:id',async (req,res)=>{
     }
 })
 // Thêm mới
-router.post('/products',async (req,res)=>{
+router.post('/products',ProductValidator,async (req,res)=>{
     try {
+        const error = validationResult(req)
+        // Check error có trống hay không
+        if (!error.isEmpty()){
+            // Lấy thông tin thông báo
+            const message = error.errors.map(item=>item.msg)
+            return res.send({message})
+        }
         const product = req.body
         const newproduct = await new ProductModel(product).save()
         res.send({message:"Thêm mới thành công",data:newproduct})
