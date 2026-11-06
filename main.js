@@ -1,6 +1,8 @@
 import express from 'express'
 const app = express()
 app.use(express.json()) // Phải có đoạn này mới lấy được dữ liệu chuẩn json từ body
+// CHỉ định đường dẫn tĩnh
+app.use(express.static('public'))
 const port = 3000
 // Thiết lập template view
 app.set('view engine','ejs')

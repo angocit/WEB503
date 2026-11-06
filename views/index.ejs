@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/main.css" rel="stylesheet" type="text/css">
     <title>Trang chủ</title>
 </head>
 <body>
@@ -20,10 +21,10 @@
     </ul>
     <h3>Danh sách hình ảnh và tác giả</h3>
     <ul>
-        <% for (item of pictures) { %>
+        <% for ({download_url,author} of pictures) { %>
             <li>
-                <img width="120" src="<%=item.download_url%>"/>
-                <span><%=item.author%></span>
+                <img width="120" src="<%=download_url%>"/>
+                <span><%=author%></span>
             </li>
         <% } %>
     </ul>
