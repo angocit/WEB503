@@ -11,6 +11,12 @@
     <span style="color: red;">Tên lớp: <%=classname%></span>
     <% } else { %>
          <span style="color: blue;">Tên lớp: <%=classname%></span>
-         <%}%>
+    <%}%>
+    <h3>Danh sách số là</h3>
+    <ul>
+    <% for (item of arr) {%>
+        <li><%=item%></li>
+    <%}%>
+    </ul>
 </body>
 </html>

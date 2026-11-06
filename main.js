@@ -16,7 +16,8 @@ app.get('/products',(req,res)=>{
 app.get('/',(req,res)=>{
     const classname = 'WD21304'
     const number = 1
-    res.render('index',{classname,number})
+    const arr = [5,2,8,3,21,9]
+    res.render('index',{classname,number,arr})
 })
 // http://localhost:3000/products/1
 app.get('/products/:id/:cat',(req,res)=>{
