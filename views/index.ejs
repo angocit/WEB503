@@ -18,5 +18,14 @@
         <li><%=item%></li>
     <%}%>
     </ul>
+    <h3>Danh sách hình ảnh và tác giả</h3>
+    <ul>
+        <% for (item of pictures) { %>
+            <li>
+                <img width="120" src="<%=item.download_url%>"/>
+                <span><%=item.author%></span>
+            </li>
+        <% } %>
+    </ul>
 </body>
 </html>
