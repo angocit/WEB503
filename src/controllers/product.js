@@ -18,6 +18,20 @@ export const create = async (req,res)=>{
         res.status(500).send({message:"Thêm thất bại"})
     }
 }
+export const getById = async (req,res)=>{
+    // Lấy id
+    const {id} = req.params
+    // Tìm xem id có tồn tại hay không
+    try {
+        const check = await ProductModel.findById(id)
+        if (!check) res.status(404).send({message:"Không tìm thấy sản phẩm"})
+       // Thực hiện cập nhật   
+        res.status(200).send({message:"Lấy thành công",data:check})
+    } catch (error) {
+        console.log(error);        
+        res.status(500).send({message:"Lấy thất bại"})
+    }
+}
 // url dạng localhost:3000/products/1
 export const update = async (req,res)=>{
     // Lấy id
@@ -33,5 +47,19 @@ export const update = async (req,res)=>{
     } catch (error) {
         console.log(error);        
         res.status(500).send({message:"Cập nhật thất bại"})
+    }
+}
+export const deleteProduct = async (req,res)=>{
+    // Lấy id
+    const {id} = req.params
+    // Tìm xem id có tồn tại hay không
+    try {
+        const check = await ProductModel.findById(id)
+        if (!check) res.status(404).send({message:"Không tìm thấy sản phẩm"})
+       // Thực hiện cập nhật   
+        const data = await ProductModel.DeleteById(id)
+        res.status(200).send({message:"Xóa thành công",data:check})
+    } catch (error) {       
+        res.status(500).send({message:"Xóa thất bại"})
     }
 }

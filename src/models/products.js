@@ -19,8 +19,12 @@ const update = async (id,product)=>{
 const findById = async (id)=>{
     const sql = `select * from products where id = ?`
     const [data] = await db.execute(sql,[id])
-    console.log(data);
-    
-    return data.length||null
+    console.log(data); 
+    return data[0]||null
 }
-export default {findAll,create,update,findById}
+const DeleteById = async (id)=>{
+    const sql = `delete from products where id = ?`
+    const [data] = await db.execute(sql,[id])
+    return data||null
+}
+export default {findAll,create,update,findById,DeleteById}
