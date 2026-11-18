@@ -4,7 +4,7 @@ export const db = mysql.createPool({
     port:'3306',
     database: 'wd21304',
     user:'root',
-    password:'123456'
+    password:''
 })
 export const testConnectDB = async ()=>{
     const conn = await db.getConnection()
