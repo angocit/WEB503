@@ -14,7 +14,7 @@ export const create = async (req,res)=>{
         const result = await ProductModel.create(body)
         res.status(201).send({message:"Thêm mới thành công",data:{...body,id:result.insertId}})
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         res.status(500).send({message:"Thêm thất bại"})
     }
 }
