@@ -1,7 +1,13 @@
 import userModel from '../models/users.js'
 import bcrypt from 'bcryptjs'
+import { validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
 export const register = async (req,res)=>{
+    const validate = validationResult(req)
+        if (!validate.isEmpty()){
+            const message = validate.errors.map(item=>item.msg)          
+            res.status(400).send({message:message})
+        }
     const userinfo = req.body
     // Tìm xem tài khoản tồn tại hay chưa qua email
     try {

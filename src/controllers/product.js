@@ -13,7 +13,7 @@ export const create = async (req,res)=>{
     const validate = validationResult(req)
     if (!validate.isEmpty()){
         const message = validate.errors.map(item=>item.msg)          
-        res.status(500).send({message:message})
+        res.status(400).send({message:message})
     }
     const body = req.body
     try {
