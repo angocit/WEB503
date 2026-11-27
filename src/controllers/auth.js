@@ -2,6 +2,7 @@ import userModel from '../models/users.js'
 import bcrypt from 'bcryptjs'
 import { validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
+import env from 'dotenv'
 export const register = async (req,res)=>{
     const validate = validationResult(req)
         if (!validate.isEmpty()){
@@ -36,7 +37,7 @@ export const login = async(req,res)=>{
         // Nếu so sánh không khớp=> Sai mật khẩu
         if (!check) return res.status(400).send({message:"Sai mật khẩu"})
         // So sánh khớp=> Tạo token
-        const token = jwt.sign({id:user.id,email:user.email},'123456',{expiresIn:"1d"})
+        const token = jwt.sign({id:user.id,email:user.email},env.config().parsed.SECRET_TOKEN,{expiresIn:"1d"})
         res.status(200).send({message:"Đăng nhập thành công",token:token})
     } catch (error) {
         console.log(error);

@@ -1,10 +1,11 @@
 import mysql from 'mysql2/promise'
+import env from 'dotenv'
 export const db = mysql.createPool({
-    host: 'localhost',
-    port:'3306',
-    database: 'wd21304',
-    user:'root',
-    password:''
+    host: env.config().parsed.HOST_URL,
+    port:env.config().parsed.DB_PORT,
+    database: env.config().parsed.DB_NAME,
+    user:env.config().parsed.DB_USER,
+    password:env.config().parsed.DB_PASS
 })
 export const testConnectDB = async ()=>{
     const conn = await db.getConnection()

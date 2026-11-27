@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import env from 'dotenv'
 export const verifyUser = async(req,res,next)=>{
     // Lấy thông tin authoziration từ header
     const {authorization} = req.headers
@@ -9,7 +10,7 @@ export const verifyUser = async(req,res,next)=>{
             // Nếu tồn tại authorization  thì tách chuỗi để lấy token
             const [,token] = authorization.split(" ")
             // Verify token
-            const verify = jwt.verify(token,'123456')
+            const verify = jwt.verify(token,env.config().parsed.SECRET_TOKEN)
             // token hợp lệ
             next()
         } catch (error) {
