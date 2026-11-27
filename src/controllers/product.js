@@ -1,4 +1,5 @@
 import ProductModel from '../models/products.js'
+import { validationResult } from 'express-validator'
 export const getAll = async (req,res)=>{
     try {
         const data = await ProductModel.findAll()
@@ -9,6 +10,11 @@ export const getAll = async (req,res)=>{
     }
 }
 export const create = async (req,res)=>{
+    const validate = validationResult(req)
+    if (!validate.isEmpty()){
+        const message = validate.errors.map(item=>item.msg)          
+        res.status(500).send({message:message})
+    }
     const body = req.body
     try {
         const result = await ProductModel.create(body)
